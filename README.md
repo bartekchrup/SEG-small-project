@@ -3,7 +3,7 @@
 ## Team members
 The members of the team are:
 - Bartosz Chrupala K20054839
-- *Enter member 2*
+- Zifan Wang K1923847
 - *Enter member 3*
 - *Enter member 4*
 - *Enter member 5*
