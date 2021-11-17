@@ -2,10 +2,11 @@
 
 ## Team members
 The members of the team are:
-- *Enter member 1*
+- Bartosz Chrupala K20054839
 - *Enter member 2*
 - *Enter member 3*
 - *Enter member 4*
+- *Enter member 5*
 *Add any further information about the team here, such as absent team members.*
 
 ## Project structure
@@ -51,3 +52,5 @@ $ python3 manage.py test
 The packages used by this application are specified in `requirements.txt`
 
 *Declare are other sources here.*
+
+Clucker model answers.
