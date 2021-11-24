@@ -15,8 +15,9 @@ class SignUpForm(forms.ModelForm):
         """Form options."""
 
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'personalStatement', 'experienceLevel']
         widgets = { 'bio': forms.Textarea() }
+    # experienceLevel = ChoiceField()
 
     new_password = forms.CharField(
         label='Password',

@@ -29,7 +29,7 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
-# @login_prohibited
+@login_prohibited
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -45,6 +45,14 @@ def log_out(request):
     logout(request)
     return redirect('home')
 
-# @login_prohibited
+@login_prohibited
 def home(request):
     return render(request, 'home.html')
+
+@login_required
+def feed(request):
+    return render(request, 'feed.html')
+
+@login_required
+def user_list(request):
+    return
