@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block body %}
+<div id="cover-image">
+  <div class="container vh-100">
+    <div class="row h-100">
+      <div class="col-6 my-auto">
+        <div class="card cover-card">
+          <h1 class="cover-heading">Home</h1>
+          <p class="cover-text">Chess club management system</p>
+          <p>
+            <a href='{% url 'sign_up' %}' class="btn btn-lg btn-secondary">
+              Sign up
+            </a>
+          </p>
+          <p>
+            <a href='{% url 'log_in' %}' class="btn btn-lg btn-secondary">
+              Log in
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

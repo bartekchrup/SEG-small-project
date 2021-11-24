@@ -18,6 +18,14 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, blank=False)
     bio = models.CharField(max_length=520, blank=True)
 
+    class Experience(models.TextChoices):
+        EXPERT = 'Expert'
+        ADVANCED = 'Advanced'
+        INTERMEDIATE = 'Intermediate'
+        BEGINER = 'Beginer'
+    experienceLevel = models.CharField(max_length=20, choices=Experience.choices)
+    personalStatement = models.CharField(max_length=200, blank=True)
+
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
