@@ -55,4 +55,5 @@ def feed(request):
 
 @login_required
 def user_list(request):
-    return
+    users = User.objects.all()
+    return render(request, 'user_list.html', {'users': users})
