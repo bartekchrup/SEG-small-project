@@ -7,8 +7,11 @@
       <table class="table">
         {% for user in users %}
           <tr>
+            <td>
+              <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" >
+            </td>
             <td>{{ user.full_name }}</td>
-            <td>{{ user.username }}</td>
+            <td><a href="{% url 'show_user' user.id %}">{{ user.username }}</a></td>
           </tr>
         {% endfor %}
       </table>
