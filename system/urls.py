@@ -26,4 +26,8 @@ urlpatterns = [
     path('feed/', views.feed, name='feed'),
     path('users/', views.user_list, name='user_list'),
     path('user/<int:user_id>', views.show_user, name='show_user'),
+    path('profile/', views.profile, name='profile'),
+    path('user/<int:user_id>/promote_to_member/', views.promote_to_member, name='promote_to_member'),
+    path('user/<int:user_id>/promote_to_officer/', views.promote_to_officer, name='promote_to_officer'),
+    path('user/<int:user_id>/transfer_ownership/', views.transfer_ownership, name='transfer_ownership'),
 ]

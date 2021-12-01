@@ -1,0 +1,27 @@
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="container">
+  <div class="row content">
+    <div class="col-xs-12 col-lg-6 col-xl-8">
+      {% include 'partials/officer_user_profile.html' with following=following followable=followable %}
+      <div class="col-12">
+        <div class="col-12">
+          <div class="col-6" align="center">
+            {% if user.is_member %}
+              <a href='{% url 'promote_to_officer' user.id %}' class="btn btn-lg btn-secondary">
+                Promote to Officer
+              </a>
+            {% elif user.is_officer %}
+              <a href='{% url 'promote_to_member' user.id %}' class="btn btn-lg btn-secondary">
+                Demote to Member
+              </a>
+              <a href='{% url 'transfer_ownership' user.id %}' class="btn btn-lg btn-secondary">
+                Transfer Ownership
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

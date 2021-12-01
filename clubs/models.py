@@ -17,6 +17,10 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
     bio = models.CharField(max_length=520, blank=True)
+    is_applicant = models.BooleanField(default=False)
+    is_member = models.BooleanField(default=False)
+    is_officer = models.BooleanField(default=False)
+    is_owner = models.BooleanField(default=False)
 
     class Experience(models.TextChoices):
         EXPERT = 'Expert'
