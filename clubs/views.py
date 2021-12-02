@@ -64,4 +64,60 @@ def show_user(request, user_id):
     except ObjectDoesNotExist:
         return redirect('user_list')
     else:
-        return render(request, 'show_user.html', {'user': user})
+        #return render(request, 'show_user.html', {'user': user})
+        current_user = request.user
+        if current_user.is_member:
+            return render(request, 'show_user.html', {'current_user': current_user, 'user': user})
+        if current_user.is_officer:
+            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user})
+        if current_user.is_owner:
+            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user})
+
+def profile(request):
+    current_rank = ""
+    user= request.user
+    if user.is_applicant:
+        current_rank = "Applicant"
+    if user.is_officer:
+        current_rank = "Officer"
+    if user.is_owner:
+        current_rank = "Owner"
+    if user.is_member:
+        current_rank = "Member"
+    return render(request, 'profile.html', {'user':user, 'current_rank':current_rank})
+
+def promote_to_member(request, user_id):
+    user = request.user
+    current_user = User.objects.get(id=user_id)
+    if ((user.is_officer or user.is_owner) and current_user.is_applicant) or user.is_owner:
+        current_user.is_applicant = False
+        current_user.is_member = True
+        current_user.is_officer = False
+        current_user.save(update_fields=["is_applicant"])
+        current_user.save(update_fields=["is_member"])
+        current_user.save(update_fields=["is_officer"])       
+    return redirect("profile")
+
+def promote_to_officer(request, user_id):
+    user = request.user
+    current_user = User.objects.get(id=user_id)
+    if current_user.is_member:
+        current_user.is_member = False
+        current_user.is_officer = True
+        current_user.save(update_fields=["is_officer"])
+        current_user.save(update_fields=["is_member"])
+    return redirect("profile")
+
+def transfer_ownership(request, user_id):
+    user = request.user
+    current_user = User.objects.get(id=user_id)
+    if (user.is_owner and current_user.is_officer):
+        user.is_owner = False
+        current_user.is_owner = True
+        user.is_officer = True
+        current_user.is_officer = False
+        current_user.save(update_fields=["is_officer"])
+        current_user.save(update_fields=["is_owner"])
+        user.save(update_fields=["is_officer"])
+        user.save(update_fields=["is_owner"])
+    return redirect("profile")

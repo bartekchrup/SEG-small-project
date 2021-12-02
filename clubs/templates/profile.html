@@ -1,0 +1,22 @@
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>Profile</h1>
+      <div class="profile-text">
+          <h3 class="profile-username">{{user.first_name}}</h3>
+          <p class="profile-username">{{user.email}}</p>
+      </div>
+      <h1> Bio:</h1>
+      <p class="profile-bio">{{user.bio}}</p>
+      <h1>Personal Statement:</h1>
+      <p class="profile-bio">{{user.personalStatement}}</p>
+      <h1> Chess Level:</h1>
+      <p class="profile-bio">{{user.experienceLevel}}</p>
+      <h1>Rank:</h1>
+      <p class="profile-bio">{{current_rank}}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
