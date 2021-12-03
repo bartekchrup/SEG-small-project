@@ -53,15 +53,24 @@ def home(request):
 def feed(request):
     return render(request, 'feed.html')
 
+@login_required
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
 
-
+@login_required
 def show_user(request, user_id):
     try:
         user = User.objects.get(id=user_id)
+        posts = Post.objects.filter(author=user)
+        following = request.user.is_following(user)
+        followable = (request.user != user)
     except ObjectDoesNotExist:
         return redirect('user_list')
     else:
-        return render(request, 'show_user.html', {'user': user})
+        return render(request, 'show_user.html',
+            {'user': user,
+             'posts': posts,
+             'following': following,
+             'followable': followable}
+        )
