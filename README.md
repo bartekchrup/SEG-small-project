@@ -5,7 +5,7 @@ The members of the team are:
 - Bartosz Chrupala K20054839
 - Zifan Wang K1923847
 - Anup Ramesha K20055112
-- *Enter member 4*
+- Mehrab Rahman K20017471
 - *Enter member 5*
 *Add any further information about the team here, such as absent team members.*
 
