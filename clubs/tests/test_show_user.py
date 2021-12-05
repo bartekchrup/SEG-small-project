@@ -1,18 +1,12 @@
 from django.test import TestCase
 from django.urls import reverse
-from microblogs.models import User
+from clubs.models import User
+
+fixtures = ['clubs/tests/fixtures/default_user.json']
 
 class ShowUserTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            '@johndoe',
-            first_name='John',
-            last_name='Doe',
-            email='johndoe@example.org',
-            password='Password123',
-            bio='The quick brown fox jumps over the lazy dog.'
-        )
-        self.url = reverse('show_user', kwargs={'user_id': self.user.id})
+    self.user = User.objects.get(username='@johndoe')
+    self.url = reverse('show_user', kwargs={'user_id': self.user.id})
 
     def test_show_user_url(self):
         self.assertEqual(self.url,f'/user/{self.user.id}')
