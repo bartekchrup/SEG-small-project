@@ -15,14 +15,17 @@ class ShowUserTest(TestCase):
         self.assertEqual(self.url,f'/user/{self.user.id}')
 
     def test_get_show_user_with_valid_id(self):
+        self.client.login(username=self.user.username, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'show_user.html')
         self.assertContains(response, "John Doe")
         self.assertContains(response, "@johndoe")
 
+
     def test_get_show_user_with_invalid_id(self):
-        url = reverse('show_user', kwargs={'user_id': self.user.id+1})
+        self.client.login(username=self.user.username, password='Password123')
+        url = reverse('show_user', kwargs={'user_id': self.user.id+9999})
         response = self.client.get(url, follow=True)
         response_url = reverse('user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)

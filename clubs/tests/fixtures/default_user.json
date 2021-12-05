@@ -12,7 +12,9 @@
       "personalStatement": "I learned chess in the chess club",
       "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
       "is_active": true,
-      "is_member": true
+      "is_member": true,
+      "is_officer": false,
+      "is_owner": false
     }
   }
 ]
