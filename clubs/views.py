@@ -19,11 +19,14 @@ def log_in(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            if user is not None:
+            if user is not None and user.is_member:
                 login(request, user)
                 redirect_url = next or 'feed'
                 return redirect(redirect_url)
-        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+            else:
+                messages.add_message(request, messages.ERROR, "Your application is still being processed, please wait to be able to log in")
+        else:
+            messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     else:
         next = request.GET.get('next') or ''
     form = LogInForm()
@@ -95,7 +98,7 @@ def promote_to_member(request, user_id):
         current_user.is_officer = False
         current_user.save(update_fields=["is_applicant"])
         current_user.save(update_fields=["is_member"])
-        current_user.save(update_fields=["is_officer"])       
+        current_user.save(update_fields=["is_officer"])
     return redirect("profile")
 
 def promote_to_officer(request, user_id):
