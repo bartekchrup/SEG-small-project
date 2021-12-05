@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from microblogs.models import User
+from clubs.models import User
 
 class UserListTest(TestCase):
     def setUp(self):

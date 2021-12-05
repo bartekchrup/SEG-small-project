@@ -2,11 +2,14 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User
 
-fixtures = ['clubs/tests/fixtures/default_user.json']
-
 class ShowUserTest(TestCase):
-    self.user = User.objects.get(username='@johndoe')
-    self.url = reverse('show_user', kwargs={'user_id': self.user.id})
+    """ Tests for showing a specific user profile """
+
+    fixtures = ['clubs/tests/fixtures/default_user.json']
+
+    def setUp(self):
+        self.user = User.objects.get(username='@johndoe')
+        self.url = reverse('show_user', kwargs={'user_id': self.user.id})
 
     def test_show_user_url(self):
         self.assertEqual(self.url,f'/user/{self.user.id}')

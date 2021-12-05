@@ -40,6 +40,7 @@ def sign_up(request):
             user = form.save()
             login(request, user)
             return redirect('feed')
+
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -69,7 +70,7 @@ def show_user(request, user_id):
     else:
         #return render(request, 'show_user.html', {'user': user})
         current_user = request.user
-        if current_user.is_member:
+        if (current_user.is_member):
             return render(request, 'show_user.html', {'current_user': current_user, 'user': user})
         if current_user.is_officer:
             return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user})
