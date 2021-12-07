@@ -25,9 +25,12 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name='sign_up'),
     path('feed/', views.feed, name='feed'),
     path('users/', views.user_list, name='user_list'),
-    path('user/<int:user_id>', views.show_user, name='show_user'),
+    path('password/', views.password, name='password'),
     path('profile/', views.profile, name='profile'),
+    path('changeprofile/', views.changeprofile, name='changeprofile'),
+    path('user/<int:user_id>', views.show_user, name='show_user'),
     path('user/<int:user_id>/promote_to_member/', views.promote_to_member, name='promote_to_member'),
     path('user/<int:user_id>/promote_to_officer/', views.promote_to_officer, name='promote_to_officer'),
     path('user/<int:user_id>/transfer_ownership/', views.transfer_ownership, name='transfer_ownership'),
+
 ]
