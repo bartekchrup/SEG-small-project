@@ -1,4 +1,4 @@
-# Team *enter team name here* Small Group project
+# Team *Llama* Small Group project
 
 ## Team members
 The members of the team are:
@@ -7,7 +7,6 @@ The members of the team are:
 - Anup Ramesha K20055112
 - Mehrab Rahman K20017471
 - Tigerlily Williams K20066796
-*Add any further information about the team here, such as absent team members.*
 
 ## Project structure
 The project is called `system`.  It currently consists of a single app `clubs`.
