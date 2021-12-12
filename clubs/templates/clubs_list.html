@@ -2,27 +2,29 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <h1>List Of Clubs:</h1>
+    <div class="col-12">
+      <h1>List Of Clubs:</h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">NAME:</th>
-          <th scope="col">LOCATION:</th>
-          <th scope="col">DESCRIPTION:</th>
-        </tr>
-      </thead>
-      <tbody>
-    {% for club in clubs %}
-    <tr>
-      <td><a href="{% url 'show_club' club.id %}">{{ club.club_name }}</a></td>
-      <td>{{ club.club_location }}</td>
-      <td>{{ club.club_description }}</td>
-    </tr>
-    {% endfor %}
-      </tbody>
-    </table>
+      <table class = "table">
+        <thead>
+          <tr>
+            <th scope="col">NAME:</th>
+            <th scope="col">LOCATION:</th>
+            <th scope="col">DESCRIPTION:</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for club in clubs %}
+      <tr>
+        <td><a href="{% url 'show_club' club.id %}">{{ club.club_name }}</a></td>
+        <td>{{ club.club_location }}</td>
+        <td>{{ club.club_description }}</td>
+      </tr>
+      {% endfor %}
+        </tbody>
+      </table>
 
+    </div>
   </div>
 </div>
 {% endblock %}

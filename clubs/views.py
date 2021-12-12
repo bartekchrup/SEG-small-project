@@ -159,6 +159,10 @@ def changeprofile(request):
         form = UserForm(instance=current_user)
     return render(request, 'changeprofile.html', {'form': form})
 
+def clubs_list(request):
+    clubs = Club.objects.all()
+    return render(request, 'clubs_list.html', {'clubs': clubs})
+
 @login_required
 def create_club(request):
     if request.method=='POST':
@@ -169,6 +173,7 @@ def create_club(request):
             club_location = form.cleaned_data.get('club_location')
             club_description = form.cleaned_data.get('club_description')
             club = Club.objects.create(club_owner = user, club_name = club_name, club_location = club_location, club_description = club_description)
+            messages.add_message(request, messages.SUCCESS, "New Club has been successfully created!")
             return redirect('show_club', club.id)
     else:
         form = ClubForm()

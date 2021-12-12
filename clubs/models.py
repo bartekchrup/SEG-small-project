@@ -44,7 +44,7 @@ class User(AbstractUser):
         return self.gravatar(size=60)
 
 class Club(models.Model):
+    club_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     club_name = models.CharField(max_length = 50, unique = True, blank = False)
     club_location = models.CharField(max_length = 100, unique = False, blank = False)
     club_description = models.CharField(max_length = 520, blank = True)
-    club_owner = models.ForeignKey(User, on_delete=models.CASCADE)

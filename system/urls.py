@@ -32,7 +32,7 @@ urlpatterns = [
     path('user/<int:user_id>/promote_to_member/', views.promote_to_member, name='promote_to_member'),
     path('user/<int:user_id>/promote_to_officer/', views.promote_to_officer, name='promote_to_officer'),
     path('user/<int:user_id>/transfer_ownership/', views.transfer_ownership, name='transfer_ownership'),
-    path('club/<int:club_>/', views.show_club, name = 'show_club'),
+    path('clubs_list/', views.clubs_list, name = 'clubs_list'),
+    path('club/<int:club_id>/', views.show_club, name = 'show_club'),
     path('create_club>/', views.create_club, name = 'create_club'),
-
 ]
