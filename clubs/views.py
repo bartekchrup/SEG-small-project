@@ -7,8 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 # from .forms import LogInForm, PasswordForm, PostForm, UserForm, SignUpForm
-from .forms import LogInForm, SignUpForm
-from .models import User
+from .forms import LogInForm, SignUpForm, ClubForm
+from .models import User, Club
 from .helpers import login_prohibited
 
 @login_prohibited
@@ -158,3 +158,26 @@ def changeprofile(request):
     else:
         form = UserForm(instance=current_user)
     return render(request, 'changeprofile.html', {'form': form})
+
+@login_required
+def create_club(request):
+    if request.method=='POST':
+        form = ClubForm(request.POST)
+        user = request.user
+        if form.is_valid():
+            club_name = form.cleaned_data.get('club_name')
+            club_location = form.cleaned_data.get('club_location')
+            club_description = form.cleaned_data.get('club_description')
+            club = Club.objects.create(club_owner = user, club_name = club_name, club_location = club_location, club_description = club_description)
+            return redirect('show_club', club.id)
+    else:
+        form = ClubForm()
+    return render(request, 'create_club.html', {'form': form})
+
+def show_club(request, club_id):
+    try:
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+        return redirect('home')
+    else:
+        return render(request, 'show_club.html',{'club': club})
