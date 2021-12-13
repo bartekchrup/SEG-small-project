@@ -27,8 +27,8 @@ class User(AbstractUser):
         EXPERT = 'Expert'
         ADVANCED = 'Advanced'
         INTERMEDIATE = 'Intermediate'
-        BEGINER = 'Beginer'
-    experienceLevel = models.CharField(max_length=20, choices=Experience.choices, default = "BEGINER")
+        BEGINNER = 'Beginner'
+    experienceLevel = models.CharField(max_length=20, choices=Experience.choices, default = "BEGINNER")
     personalStatement = models.CharField(max_length=200, blank=True)
 
     def full_name(self):
