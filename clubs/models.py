@@ -51,22 +51,22 @@ class Club(models.Model):
     club_description = models.CharField(max_length = 520, blank = True)
 
     def addOfficer(self, user):
-        pass
+        self.officers.add(user)
 
     def removeOfficer(self, user):
-        pass
+        self.officers.remove(user)
 
     def addMember(self, user):
-        pass
+        self.members.add(user)
 
     def removeMember(self, user):
-        pass
+        self.members.remove(user)
 
     def is_member(self, user):
-        pass
+        return user in self.members.all()
 
     def is_officer(self, user):
-        pass
+        return user in self.officers.all()
 
     def is_owner(self, user):
-        pass
+        return user == owner
