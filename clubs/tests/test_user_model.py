@@ -50,3 +50,13 @@ class UserModelTestCase(TestCase):
 
     def test_is_owner_for_non_owner(self):
         self.assertFalse(self.club.is_owner(self.john))
+
+    def test_add_member_that_is_already_member(self):
+        self.assertTrue(self.club.is_member(self.jane))
+        self.club.addMember(self.jane)
+        self.assertTrue(self.club.is_member(self.jane))
+
+    def test_promote_member_that_is_already_officer(self):
+        self.assertTrue(self.club.is_officer(self.jane))
+        self.club.addOfficer(self.jane)
+        self.assertTrue(self.club.is_officer(self.jane))
