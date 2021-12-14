@@ -20,7 +20,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'email': 'janedoe@example.org',
             'bio': 'My bio',
             'personalStatement': "I learned chess in the chess club",
-            'experienceLevel': "Beginer",
+            'experienceLevel': "Beginner",
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
@@ -61,6 +61,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
+        print(f"count before: {before_count} count after: {after_count}")
         self.assertEqual(after_count, before_count+1)
         response_url = reverse('feed')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)

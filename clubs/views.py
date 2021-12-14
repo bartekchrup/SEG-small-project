@@ -37,6 +37,7 @@ def log_in(request):
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             user = form.save()
             login(request, user)
