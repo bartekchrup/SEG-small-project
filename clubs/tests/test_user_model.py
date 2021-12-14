@@ -5,15 +5,13 @@ class UserModelTestCase(TestCase):
     """ Tests for showing a specific user profile """
 
     fixtures = ['clubs/tests/fixtures/default_user.json',
-                'clubs/tests/fixtures/extra_user.json',
+                'clubs/tests/fixtures/officer_user.json',
                 'clubs/tests/fixtures/default_club.json']
 
     def setUp(self):
         self.john = User.objects.get(username='@johndoe')
         self.jane = User.objects.get(username='@janedoe')
         self.club = Club.objects.get(club_name = "Big chess")
-        self.club.addMember(self.jane)
-        self.club.addOfficer(self.jane)
 
     def test_join_club(self):
         self.assertFalse(self.club.is_member(self.john))

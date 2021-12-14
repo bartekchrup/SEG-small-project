@@ -20,7 +20,7 @@ def log_in(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            if user is not None and user.is_member:
+            if user is not None:
                 login(request, user)
                 redirect_url = next or 'feed'
                 return redirect(redirect_url)
@@ -70,13 +70,15 @@ def show_user(request, user_id):
         return redirect('user_list')
     else:
         #return render(request, 'show_user.html', {'user': user})
+        current_club = Club.objects.get(id = request.GET.get('club'))
         current_user = request.user
-        if (current_user.is_member):
-            return render(request, 'show_user.html', {'current_user': current_user, 'user': user})
-        if current_user.is_officer:
-            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user})
-        if current_user.is_owner:
+        if (current_club.is_owner(current_user)):
             return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user})
+        elif (current_club.is_officer(current_user)):
+            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user})
+        elif (current_club.is_member(current_user)):
+            return render(request, 'show_user.html', {'current_user': current_user, 'user': user})
+
 
 def profile(request):
     current_rank = ""

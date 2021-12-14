@@ -1,26 +1,28 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User
+from clubs.models import User, Club
 
 class ShowUserTest(TestCase):
     """ Tests for showing a specific user profile """
 
-    fixtures = ['clubs/tests/fixtures/default_user.json']
+    fixtures = ['clubs/tests/fixtures/officer_user.json',
+                'clubs/tests/fixtures/default_club.json']
 
     def setUp(self):
-        self.user = User.objects.get(username='@johndoe')
-        self.url = reverse('show_user', kwargs={'user_id': self.user.id})
+        self.user = User.objects.get(username='@janedoe')
+        self.club = Club.objects.get(club_name = "Big chess")
+        self.url = reverse('show_user', kwargs={'user_id': self.user.id}) + f'?club={self.club.id}'
 
     def test_show_user_url(self):
-        self.assertEqual(self.url,f'/user/{self.user.id}')
+        self.assertEqual(self.url,f'/user/{self.user.id}?club={self.club.id}')
 
-    def test_get_show_user_with_valid_id(self):
+    def test_get_show_user_as_owner(self):
         self.client.login(username=self.user.username, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'show_user.html')
-        self.assertContains(response, "John Doe")
-        self.assertContains(response, "@johndoe")
+        self.assertTemplateUsed(response, 'owner_show_user.html')
+        self.assertContains(response, "Jane Doe")
+        self.assertContains(response, "@janedoe")
 
 
     def test_get_show_user_with_invalid_id(self):
