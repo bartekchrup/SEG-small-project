@@ -1,0 +1,12 @@
+[
+  {
+    "model": "clubs.club",
+    "pk": 1,
+    "fields": {
+      "owner_id": 1,
+      "club_name": "Big chess",
+      "club_location": "Bush house 6th floor",
+      "club_description": "Absolutely massive club"
+    }
+  }
+]

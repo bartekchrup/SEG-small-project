@@ -18,10 +18,6 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
     bio = models.CharField(max_length=520, blank=True)
-    is_applicant = models.BooleanField(default=False)
-    is_member = models.BooleanField(default=False)
-    is_officer = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
 
     class Experience(models.TextChoices):
         EXPERT = 'Expert'
@@ -43,8 +39,34 @@ class User(AbstractUser):
     def mini_gravatar(self):
         return self.gravatar(size=60)
 
+    # def in_club(self, club):
+    #     return club in self.clubs.all()
+
 class Club(models.Model):
-    club_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    officers = models.ManyToManyField('User', related_name = 'clubs-in-office+')
+    members = models.ManyToManyField('User', related_name = 'club-memberships+')
     club_name = models.CharField(max_length = 50, unique = True, blank = False)
     club_location = models.CharField(max_length = 100, unique = False, blank = False)
     club_description = models.CharField(max_length = 520, blank = True)
+
+    def addOfficer(self, user):
+        pass
+
+    def removeOfficer(self, user):
+        pass
+
+    def addMember(self, user):
+        pass
+
+    def removeMember(self, user):
+        pass
+
+    def is_member(self, user):
+        pass
+
+    def is_officer(self, user):
+        pass
+
+    def is_owner(self, user):
+        pass
