@@ -34,3 +34,19 @@ class UserModelTestCase(TestCase):
         self.assertTrue(self.club.is_officer(self.jane))
         self.club.removeOfficer(self.jane)
         self.assertFalse(self.club.is_officer(self.jane))
+
+    def test_remove_non_member_user_from_club(self):
+        self.assertFalse(self.club.is_member(self.john))
+        self.club.removeMember(self.john)
+        self.assertFalse(self.club.is_member(self.john))
+
+    def test_demote_non_officer_user(self):
+        self.assertFalse(self.club.is_officer(self.john))
+        self.club.removeOfficer(self.john)
+        self.assertFalse(self.club.is_officer(self.john))
+
+    def test_is_owner_for_real_owner(self):
+        self.assertTrue(self.club.is_owner(self.jane))
+
+    def test_is_owner_for_non_owner(self):
+        self.assertFalse(self.club.is_owner(self.john))

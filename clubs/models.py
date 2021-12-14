@@ -69,4 +69,4 @@ class Club(models.Model):
         return user in self.officers.all()
 
     def is_owner(self, user):
-        return user == owner
+        return user == self.owner
