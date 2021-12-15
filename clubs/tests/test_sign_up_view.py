@@ -20,7 +20,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'email': 'janedoe@example.org',
             'bio': 'My bio',
             'personalStatement': "I learned chess in the chess club",
-            'experienceLevel': "Beginner",
+            'experienceLevel': "Beginner", 
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
