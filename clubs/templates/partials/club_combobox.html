@@ -4,7 +4,7 @@
   </button>
   <ul id="clubs-drop-down" class="dropdown-menu">
     {% for club in user_clubs %}
-    <li><a class="dropdown-item" href="#">{{ club.club_name }}</a></li>
+    <li><a class="dropdown-item" href='{% url 'switch_club' club.id %}'>{{ club.club_name }}</a></li>
     {% endfor %}
   </ul>
 </div>

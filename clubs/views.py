@@ -118,6 +118,15 @@ def promote_to_officer(request, user_id):
     return redirect("profile")
 
 @login_required
+def switch_selected_club(request, club_id):
+    user = request.user
+    club_to_switch = Club.objects.get(id = club_id)
+    user_clubs = request.user.member_at.all()
+    if club_to_switch in user_clubs:
+        user.preferredClub = club_to_switch
+    return redirect('user_list')
+
+@login_required
 def transfer_ownership(request, user_id):
     user = request.user
     current_user = User.objects.get(id=user_id)
