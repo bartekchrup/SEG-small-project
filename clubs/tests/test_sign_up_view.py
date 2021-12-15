@@ -5,6 +5,7 @@ from django.urls import reverse
 from clubs.forms import SignUpForm
 from clubs.models import User
 from clubs.tests.helpers import LogInTester
+from django.conf import settings
 
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
@@ -40,9 +41,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
     def test_get_sign_up_redirects_when_logged_in(self):
         self.client.login(username=self.user.username, password="Password123")
         response = self.client.get(self.url, follow=True)
-        redirect_url = reverse('feed')
+        redirect_url = reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, f"{settings.REDIRECT_URL_WHEN_LOGGED_IN}.html")
 
     def test_unsuccesful_sign_up(self):
         self.form_input['username'] = 'BAD_USERNAME'
@@ -63,9 +64,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
         after_count = User.objects.count()
         print(f"count before: {before_count} count after: {after_count}")
         self.assertEqual(after_count, before_count+1)
-        response_url = reverse('feed')
+        response_url = reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, f"{settings.REDIRECT_URL_WHEN_LOGGED_IN}.html")
         user = User.objects.get(username='@janedoe')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
@@ -81,6 +82,6 @@ class SignUpViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count)
-        redirect_url = reverse('feed')
+        redirect_url = reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, f"{settings.REDIRECT_URL_WHEN_LOGGED_IN}.html")

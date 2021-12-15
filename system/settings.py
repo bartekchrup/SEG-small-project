@@ -128,7 +128,7 @@ STATICFILES_DIRS = [
 AUTH_USER_MODEL = 'clubs.User'
 
 # URL where @login_prohibited redirects to
-REDIRECT_URL_WHEN_LOGGED_IN = 'feed'
+REDIRECT_URL_WHEN_LOGGED_IN = 'clubs_list'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

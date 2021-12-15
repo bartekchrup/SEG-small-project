@@ -6,6 +6,8 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.conf import settings
 # from .forms import LogInForm, PasswordForm, PostForm, UserForm, SignUpForm
 from .forms import LogInForm, SignUpForm, ClubForm
 from .models import User, Club
@@ -22,7 +24,7 @@ def log_in(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                redirect_url = next or 'feed'
+                redirect_url = next or settings.REDIRECT_URL_WHEN_LOGGED_IN
                 return redirect(redirect_url)
             else:
                 messages.add_message(request, messages.ERROR, "Your application is still being processed, please wait to be able to log in")
@@ -37,11 +39,10 @@ def log_in(request):
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('feed')
+            return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
 
     else:
         form = SignUpForm()
@@ -56,9 +57,6 @@ def home(request):
     return render(request, 'home.html')
 
 @login_required
-def feed(request):
-    return render(request, 'feed.html')
-
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
@@ -80,7 +78,7 @@ def show_user(request, user_id):
         elif (current_club.is_member(current_user)):
             return render(request, 'show_user.html', {'current_user': current_user, 'user': user})
 
-
+@login_required
 def profile(request):
     current_rank = ""
     user= request.user
@@ -94,6 +92,7 @@ def profile(request):
         current_rank = "Member"
     return render(request, 'profile.html', {'user':user, 'current_rank':current_rank})
 
+@login_required
 def promote_to_member(request, user_id):
     user = request.user
     current_user = User.objects.get(id=user_id)
@@ -106,6 +105,7 @@ def promote_to_member(request, user_id):
         current_user.save(update_fields=["is_officer"])
     return redirect("profile")
 
+@login_required
 def promote_to_officer(request, user_id):
     user = request.user
     current_user = User.objects.get(id=user_id)
@@ -116,6 +116,7 @@ def promote_to_officer(request, user_id):
         current_user.save(update_fields=["is_member"])
     return redirect("profile")
 
+@login_required
 def transfer_ownership(request, user_id):
     user = request.user
     current_user = User.objects.get(id=user_id)
@@ -144,7 +145,7 @@ def password(request):
                 current_user.save()
                 login(request, current_user)
                 messages.add_message(request, messages.SUCCESS, "Password updated!")
-                return redirect('feed')
+                return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     form = PasswordForm()
     return render(request, 'password.html', {'form': form})
 
@@ -157,11 +158,12 @@ def changeprofile(request):
         if form.is_valid():
             messages.add_message(request, messages.SUCCESS, "Profile updated!")
             form.save()
-            return redirect('feed')
+            return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     else:
         form = UserForm(instance=current_user)
     return render(request, 'changeprofile.html', {'form': form})
 
+@login_required
 def clubs_list(request):
     clubs = Club.objects.all()
     return render(request, 'clubs_list.html', {'clubs': clubs})
@@ -182,6 +184,7 @@ def create_club(request):
         form = ClubForm()
     return render(request, 'create_club.html', {'form': form})
 
+@login_required
 def show_club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)

@@ -26,6 +26,7 @@ class User(AbstractUser):
         BEGINNER = 'Beginner'
     experienceLevel = models.CharField(max_length=20, choices=Experience.choices, default = "BEGINNER")
     personalStatement = models.CharField(max_length=200, blank=True)
+    preferredClub = models.ForeignKey('Club', on_delete = models.SET_NULL, null=True)
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'

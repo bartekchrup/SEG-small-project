@@ -5,6 +5,7 @@ from django.urls import reverse
 from clubs.forms import LogInForm
 from clubs.models import User
 from .helpers import LogInTester
+from django.conf import settings
 
 class LogInViewTestCase(TestCase, LogInTester):
     """Tests of the log in view"""
@@ -45,9 +46,9 @@ class LogInViewTestCase(TestCase, LogInTester):
         form_input = { 'username': '@johndoe', 'password' : 'Password123' }
         response = self.client.post(self.url, form_input, follow=True)
         self.assertTrue(self._is_logged_in())
-        response_url = reverse('feed')
+        response_url = reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, f"{settings.REDIRECT_URL_WHEN_LOGGED_IN}.html")
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
 
