@@ -27,7 +27,7 @@ def log_in(request):
                 redirect_url = next or settings.REDIRECT_URL_WHEN_LOGGED_IN
                 return redirect(redirect_url)
             else:
-                messages.add_message(request, messages.ERROR, "Your application is still being processed, please wait to be able to log in")
+                messages.add_message(request, messages.ERROR, "You have entered the wrong username or password")
         else:
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     else:
@@ -58,40 +58,54 @@ def home(request):
 
 @login_required
 def user_list(request):
-    users = User.objects.all()
-    user_clubs = request.user.member_at.all()
-    return render(request, 'user_list.html', {'users': users, 'user_clubs': user_clubs})
+    try:
+        selected_club = request.user.preferredClub
+        users_in_club = selected_club.members.all()
+    except ObjectDoesNotExist:
+        return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+    else:
+        user_clubs = request.user.member_at.all()
+        return render(request, 'user_list.html', {'users': users_in_club, 'user_clubs': user_clubs})
 
 @login_required
 def show_user(request, user_id):
     try:
-        user = User.objects.get(id=user_id)
+        user_to_show = User.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('user_list')
     else:
         user_clubs = request.user.member_at.all()
         current_user = request.user
+        current_club = current_user.preferredClub
         if (current_club.is_owner(current_user)):
-            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user, 'user_clubs': user_clubs})
+            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})
         elif (current_club.is_officer(current_user)):
-            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user, 'user_clubs': user_clubs})
+            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})
         elif (current_club.is_member(current_user)):
-            return render(request, 'show_user.html', {'current_user': current_user, 'user': user, 'user_clubs': user_clubs})
+            return render(request, 'show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})
 
 @login_required
 def profile(request):
     current_rank = ""
-    user= request.user
-    if user.is_applicant:
-        current_rank = "Applicant"
-    if user.is_officer:
-        current_rank = "Officer"
-    if user.is_owner:
-        current_rank = "Owner"
-    if user.is_member:
-        current_rank = "Member"
-    user_clubs = request.user.member_at.all()
-    return render(request, 'profile.html', {'user':user, 'current_rank':current_rank, 'user_clubs': user_clubs})
+    user = request.user
+    user_club_memberships = user.member_at.all()
+    selected_club = user.preferredClub
+
+    if (selected_club == None):
+        if (not user_club_memberships):
+            current_rank = "Applicant"
+        else:
+            messages.add_message(request, messages.ERROR, "Please select a club from 'Your Clubs' to view your profile")
+            return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+    else:
+        if (selected_club.is_owner(user)):
+            current_rank = "Owner"
+        elif (selected_club.is_officer(user)):
+                current_rank = "Officer"
+        elif (selected_club.is_member(user)):
+            current_rank = "Member"
+
+    return render(request, 'profile.html', {'user':user, 'current_rank':current_rank, 'user_clubs': user_club_memberships})
 
 @login_required
 def promote_to_member(request, user_id):
@@ -119,11 +133,12 @@ def promote_to_officer(request, user_id):
 
 @login_required
 def switch_selected_club(request, club_id):
-    user = request.user
+    user = User.objects.get(id=request.user.id)
     club_to_switch = Club.objects.get(id = club_id)
     user_clubs = request.user.member_at.all()
     if club_to_switch in user_clubs:
         user.preferredClub = club_to_switch
+        user.save()
     return redirect('user_list')
 
 @login_required

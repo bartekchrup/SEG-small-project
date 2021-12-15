@@ -11,6 +11,8 @@ class ShowUserTest(TestCase):
     def setUp(self):
         self.user = User.objects.get(username='@janedoe')
         self.club = Club.objects.get(club_name = "Big chess")
+        self.user.preferredClub = self.club
+        self.user.save()
         self.url = reverse('show_user', kwargs={'user_id': self.user.id}) + f'?club={self.club.id}'
 
     def test_show_user_url(self):

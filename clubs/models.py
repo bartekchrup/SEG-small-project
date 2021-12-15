@@ -41,11 +41,8 @@ class User(AbstractUser):
     def mini_gravatar(self):
         return self.gravatar(size=60)
 
-    def getClubMemberships(self):
-        self.member_at.all()
-
 class Club(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_at')
     officers = models.ManyToManyField('User', related_name='officer_at')
     members = models.ManyToManyField('User', related_name='member_at')
     club_name = models.CharField(max_length = 50, unique = True, blank = False)

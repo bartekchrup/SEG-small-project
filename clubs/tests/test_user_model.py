@@ -61,5 +61,4 @@ class UserModelTestCase(TestCase):
         self.assertTrue(self.club.is_officer(self.jane))
 
     def test_return_correct_club_memberships(self):
-        print(f"member is part of club: {self.club.is_member(self.jane)}")
-        print(self.jane.getClubMemberships() or "List was empty")
+        pass
