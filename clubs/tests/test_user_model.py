@@ -12,6 +12,7 @@ class UserModelTestCase(TestCase):
         self.john = User.objects.get(username='@johndoe')
         self.jane = User.objects.get(username='@janedoe')
         self.club = Club.objects.get(club_name = "Big chess")
+        self.club.addMember(self.jane)
 
     def test_join_club(self):
         self.assertFalse(self.club.is_member(self.john))
@@ -58,3 +59,7 @@ class UserModelTestCase(TestCase):
         self.assertTrue(self.club.is_officer(self.jane))
         self.club.addOfficer(self.jane)
         self.assertTrue(self.club.is_officer(self.jane))
+
+    def test_return_correct_club_memberships(self):
+        print(f"member is part of club: {self.club.is_member(self.jane)}")
+        print(self.jane.getClubMemberships() or "List was empty")

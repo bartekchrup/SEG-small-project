@@ -26,6 +26,7 @@ class User(AbstractUser):
         BEGINNER = 'Beginner'
     experienceLevel = models.CharField(max_length=20, choices=Experience.choices, default = "BEGINNER")
     personalStatement = models.CharField(max_length=200, blank=True)
+
     preferredClub = models.ForeignKey('Club', on_delete = models.SET_NULL, null=True)
 
     def full_name(self):
@@ -40,13 +41,13 @@ class User(AbstractUser):
     def mini_gravatar(self):
         return self.gravatar(size=60)
 
-    # def in_club(self, club):
-    #     return club in self.clubs.all()
+    def getClubMemberships(self):
+        self.member_at.all()
 
 class Club(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    officers = models.ManyToManyField('User', related_name = 'clubs-in-office+')
-    members = models.ManyToManyField('User', related_name = 'club-memberships+')
+    officers = models.ManyToManyField('User', related_name='officer_at')
+    members = models.ManyToManyField('User', related_name='member_at')
     club_name = models.CharField(max_length = 50, unique = True, blank = False)
     club_location = models.CharField(max_length = 100, unique = False, blank = False)
     club_description = models.CharField(max_length = 520, blank = True)
@@ -71,3 +72,6 @@ class Club(models.Model):
 
     def is_owner(self, user):
         return user == self.owner
+
+    # def getClubMemberships(self, user):
+    #     return None

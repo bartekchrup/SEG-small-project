@@ -3,7 +3,7 @@
     Your Clubs
   </button>
   <ul id="clubs-drop-down" class="dropdown-menu">
-    {% for club in clubs %}
+    {% for club in user_clubs %}
     <li><a class="dropdown-item" href="#">{{ club.club_name }}</a></li>
     {% endfor %}
   </ul>

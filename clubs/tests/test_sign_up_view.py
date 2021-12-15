@@ -62,7 +62,6 @@ class SignUpViewTestCase(TestCase, LogInTester):
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
-        print(f"count before: {before_count} count after: {after_count}")
         self.assertEqual(after_count, before_count+1)
         response_url = reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)

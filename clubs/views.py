@@ -59,7 +59,8 @@ def home(request):
 @login_required
 def user_list(request):
     users = User.objects.all()
-    return render(request, 'user_list.html', {'users': users})
+    user_clubs = request.user.member_at.all()
+    return render(request, 'user_list.html', {'users': users, 'user_clubs': user_clubs})
 
 @login_required
 def show_user(request, user_id):
@@ -68,15 +69,14 @@ def show_user(request, user_id):
     except ObjectDoesNotExist:
         return redirect('user_list')
     else:
-        #return render(request, 'show_user.html', {'user': user})
-        current_club = Club.objects.get(id = request.GET.get('club'))
+        user_clubs = request.user.member_at.all()
         current_user = request.user
         if (current_club.is_owner(current_user)):
-            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user})
+            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user, 'user_clubs': user_clubs})
         elif (current_club.is_officer(current_user)):
-            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user})
+            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user, 'user_clubs': user_clubs})
         elif (current_club.is_member(current_user)):
-            return render(request, 'show_user.html', {'current_user': current_user, 'user': user})
+            return render(request, 'show_user.html', {'current_user': current_user, 'user': user, 'user_clubs': user_clubs})
 
 @login_required
 def profile(request):
@@ -90,7 +90,8 @@ def profile(request):
         current_rank = "Owner"
     if user.is_member:
         current_rank = "Member"
-    return render(request, 'profile.html', {'user':user, 'current_rank':current_rank})
+    user_clubs = request.user.member_at.all()
+    return render(request, 'profile.html', {'user':user, 'current_rank':current_rank, 'user_clubs': user_clubs})
 
 @login_required
 def promote_to_member(request, user_id):
@@ -147,7 +148,8 @@ def password(request):
                 messages.add_message(request, messages.SUCCESS, "Password updated!")
                 return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     form = PasswordForm()
-    return render(request, 'password.html', {'form': form})
+    user_clubs = request.user.member_at.all()
+    return render(request, 'password.html', {'form': form, 'user_clubs': user_clubs})
 
 
 @login_required
@@ -161,12 +163,14 @@ def changeprofile(request):
             return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     else:
         form = UserForm(instance=current_user)
-    return render(request, 'changeprofile.html', {'form': form})
+    user_clubs = request.user.member_at.all()
+    return render(request, 'changeprofile.html', {'form': form, 'user_clubs': user_clubs})
 
 @login_required
 def clubs_list(request):
     clubs = Club.objects.all()
-    return render(request, 'clubs_list.html', {'clubs': clubs})
+    user_clubs = request.user.member_at.all()
+    return render(request, 'clubs_list.html', {'clubs': clubs, 'user_clubs': user_clubs})
 
 @login_required
 def create_club(request):
@@ -182,7 +186,8 @@ def create_club(request):
             return redirect('show_club', club.id)
     else:
         form = ClubForm()
-    return render(request, 'create_club.html', {'form': form})
+    user_clubs = request.user.member_at.all()
+    return render(request, 'create_club.html', {'form': form, 'user_clubs': user_clubs})
 
 @login_required
 def show_club(request, club_id):
@@ -191,4 +196,5 @@ def show_club(request, club_id):
     except ObjectDoesNotExist:
         return redirect('home')
     else:
-        return render(request, 'show_club.html',{'club': club})
+        user_clubs = request.user.member_at.all()
+        return render(request, 'show_club.html',{'club': club, 'user_clubs': user_clubs})
