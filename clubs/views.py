@@ -206,6 +206,7 @@ def create_club(request):
             club_location = form.cleaned_data.get('club_location')
             club_description = form.cleaned_data.get('club_description')
             club = Club.objects.create(owner = user, club_name = club_name, club_location = club_location, club_description = club_description)
+            club.addOfficer(user)
             messages.add_message(request, messages.SUCCESS, "New Club has been successfully created!")
             return redirect('show_club', club.id)
     else:
@@ -217,8 +218,9 @@ def create_club(request):
 def show_club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
+        club_owner = club.owner
     except ObjectDoesNotExist:
         return redirect('home')
     else:
         user_clubs = request.user.member_at.all()
-        return render(request, 'show_club.html',{'club': club, 'user_clubs': user_clubs})
+        return render(request, 'show_club.html',{'club': club, 'user': club_owner ,'user_clubs': user_clubs})

@@ -51,6 +51,7 @@ class Club(models.Model):
 
     def addOfficer(self, user):
         self.officers.add(user)
+        self.addMember(user)
 
     def removeOfficer(self, user):
         self.officers.remove(user)
