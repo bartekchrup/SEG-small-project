@@ -21,14 +21,16 @@
         <td>{{ club.club_description }}</td>
         <td>
         <form action="{% url 'join_club' club.id %}" method="get">
-          {% if user in club.applicants.all %}
-            <button class="btn card_btn"> Cancel </button>
-          {% elif user in club.members.all %}
-            <button class="btn card_btn"> Leave </button>
-          {% elif user in club.officers.all %}
-            <button class="btn card_btn"> Leave </button>
-          {% else %}
-            <button class="btn card_btn"> Join </button>
+          {% if user != club.owner %}
+            {% if user in club.applicants.all %}
+              <button class="btn card_btn"> Cancel </button>
+            {% elif user in club.members.all %}
+              <button class="btn card_btn"> Leave </button>
+            {% elif user in club.officers.all %}
+              <button class="btn card_btn"> Leave </button>
+            {% else %}
+              <button class="btn card_btn"> Join </button>
+            {% endif %}
           {% endif %}
         </form>
       </td>
