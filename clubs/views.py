@@ -56,16 +56,28 @@ def log_out(request):
 def home(request):
     return render(request, 'home.html')
 
+def _findSelectedClub(user):
+    user_clubs = user.member_at.all()
+    if user.preferredClub is None:
+        if user.member_at.all():
+            user.preferredClub = user_clubs[0]
+            user.save()
+    return user.preferredClub
+
+
+
 @login_required
 def user_list(request):
     try:
+        selected_club = _findSelectedClub(request.user)
         selected_club = request.user.preferredClub
         users_in_club = selected_club.members.all()
+        club_name = selected_club.club_name
     except ObjectDoesNotExist:
         return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     else:
         user_clubs = request.user.member_at.all()
-        return render(request, 'user_list.html', {'users': users_in_club, 'user_clubs': user_clubs})
+        return render(request, 'user_list.html', {'users': users_in_club, 'user_clubs': user_clubs, 'club_name': club_name})
 
 @login_required
 def show_user(request, user_id):
@@ -89,7 +101,7 @@ def profile(request):
     current_rank = ""
     user = request.user
     user_club_memberships = user.member_at.all()
-    selected_club = user.preferredClub
+    selected_club = _findSelectedClub(user)
 
     if (selected_club == None):
         if (not user_club_memberships):
@@ -139,6 +151,7 @@ def switch_selected_club(request, club_id):
     if club_to_switch in user_clubs:
         user.preferredClub = club_to_switch
         user.save()
+        messages.add_message(request, messages.SUCCESS, f"Switched to {club_to_switch.club_name}")
     return redirect('user_list')
 
 @login_required
