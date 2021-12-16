@@ -34,5 +34,5 @@ urlpatterns = [
     path('switch_club/<int:club_id>', views.switch_selected_club, name='switch_club'),
     path('clubs_list/', views.clubs_list, name = 'clubs_list'),
     path('club/<int:club_id>/', views.show_club, name = 'show_club'),
-    path('create_club>/', views.create_club, name = 'create_club'),
+    path('create_club/', views.create_club, name = 'create_club'),
 ]

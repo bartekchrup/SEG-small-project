@@ -205,7 +205,7 @@ def create_club(request):
             club_name = form.cleaned_data.get('club_name')
             club_location = form.cleaned_data.get('club_location')
             club_description = form.cleaned_data.get('club_description')
-            club = Club.objects.create(club_owner = user, club_name = club_name, club_location = club_location, club_description = club_description)
+            club = Club.objects.create(owner = user, club_name = club_name, club_location = club_location, club_description = club_description)
             messages.add_message(request, messages.SUCCESS, "New Club has been successfully created!")
             return redirect('show_club', club.id)
     else:
