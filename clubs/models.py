@@ -56,11 +56,17 @@ class Club(models.Model):
     def removeOfficer(self, user):
         self.officers.remove(user)
 
+    def officer_count(self):
+        return self.officers.count()
+
     def addMember(self, user):
         self.members.add(user)
 
     def removeMember(self, user):
         self.members.remove(user)
+
+    def member_count(self):
+        return self.members.count()
 
     def is_member(self, user):
         return user in self.members.all()
