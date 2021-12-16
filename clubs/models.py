@@ -45,6 +45,7 @@ class Club(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_at')
     officers = models.ManyToManyField('User', related_name='officer_at')
     members = models.ManyToManyField('User', related_name='member_at')
+    applicants = models.ManyToManyField('User', related_name='applicants_at')
     club_name = models.CharField(max_length = 50, unique = True, blank = False)
     club_location = models.CharField(max_length = 100, unique = False, blank = False)
     club_description = models.CharField(max_length = 520, blank = True)
@@ -65,8 +66,17 @@ class Club(models.Model):
     def removeMember(self, user):
         self.members.remove(user)
 
+    def addApplicants(self, user):
+        self.applicants.add(user)
+
+    def removeApplicants(self, user):
+        self.applicants.remove(user)
+
     def member_count(self):
         return self.members.count()
+
+    def is_applicant(self, user):
+        return user in self.applicants.all()
 
     def is_member(self, user):
         return user in self.members.all()
