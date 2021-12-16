@@ -151,6 +151,7 @@ def switch_selected_club(request, club_id):
     if club_to_switch in user_clubs:
         user.preferredClub = club_to_switch
         user.save()
+        messages.add_message(request, messages.SUCCESS, f"Switched to {club_to_switch.club_name}")
     return redirect('user_list')
 
 @login_required
