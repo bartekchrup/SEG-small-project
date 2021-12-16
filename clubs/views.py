@@ -192,9 +192,11 @@ def changeprofile(request):
 
 @login_required
 def clubs_list(request):
+    user = request.user
     clubs = Club.objects.all()
     user_clubs = request.user.member_at.all()
-    return render(request, 'clubs_list.html', {'clubs': clubs, 'user_clubs': user_clubs})
+    return render(request, 'clubs_list.html', {'clubs': clubs, 'user_clubs': user_clubs, 'user': user})
+
 
 @login_required
 def create_club(request):
@@ -223,3 +225,11 @@ def show_club(request, club_id):
     else:
         user_clubs = request.user.member_at.all()
         return render(request, 'show_club.html',{'club': club ,'user_clubs': user_clubs})
+
+
+@login_required
+def join_club(request,club_id):
+    user = request.user
+    club = Club.objects.get(id=club_id)
+    club.addApplicants(user)
+    return redirect('clubs_list')
