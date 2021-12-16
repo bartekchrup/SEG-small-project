@@ -56,9 +56,20 @@ def log_out(request):
 def home(request):
     return render(request, 'home.html')
 
+def _findSelectedClub(user):
+    user_clubs = user.member_at.all()
+    if user.preferredClub is None:
+        if user.member_at.all():
+            user.preferredClub = user_clubs[0]
+            user.save()
+    return user.preferredClub
+
+
+
 @login_required
 def user_list(request):
     try:
+        selected_club = _findSelectedClub(request.user)
         selected_club = request.user.preferredClub
         users_in_club = selected_club.members.all()
     except ObjectDoesNotExist:
@@ -89,7 +100,7 @@ def profile(request):
     current_rank = ""
     user = request.user
     user_club_memberships = user.member_at.all()
-    selected_club = user.preferredClub
+    selected_club = _findSelectedClub(user)
 
     if (selected_club == None):
         if (not user_club_memberships):
