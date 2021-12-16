@@ -72,11 +72,12 @@ def user_list(request):
         selected_club = _findSelectedClub(request.user)
         selected_club = request.user.preferredClub
         users_in_club = selected_club.members.all()
+        club_name = selected_club.club_name
     except ObjectDoesNotExist:
         return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     else:
         user_clubs = request.user.member_at.all()
-        return render(request, 'user_list.html', {'users': users_in_club, 'user_clubs': user_clubs})
+        return render(request, 'user_list.html', {'users': users_in_club, 'user_clubs': user_clubs, 'club_name': club_name})
 
 @login_required
 def show_user(request, user_id):
