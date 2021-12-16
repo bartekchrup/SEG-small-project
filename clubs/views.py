@@ -218,9 +218,8 @@ def create_club(request):
 def show_club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
-        club_owner = club.owner
     except ObjectDoesNotExist:
         return redirect('home')
     else:
         user_clubs = request.user.member_at.all()
-        return render(request, 'show_club.html',{'club': club, 'user': club_owner ,'user_clubs': user_clubs})
+        return render(request, 'show_club.html',{'club': club ,'user_clubs': user_clubs})
