@@ -235,6 +235,8 @@ def join_club(request,club_id):
         club.removeApplicants(user)
     elif user in club.members.all():
         club.removeMember(user)
+    elif user in club.officers.all():
+        club.removeOfficer(user)
     else:
         club.addApplicants(user)
 

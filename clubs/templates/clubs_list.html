@@ -25,6 +25,8 @@
             <button class="btn card_btn"> Cancel </button>
           {% elif user in club.members.all %}
             <button class="btn card_btn"> Leave </button>
+          {% elif user in club.officers.all %}
+            <button class="btn card_btn"> Leave </button>
           {% else %}
             <button class="btn card_btn"> Join </button>
           {% endif %}
