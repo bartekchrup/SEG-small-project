@@ -19,13 +19,17 @@
         <td><a href="{% url 'show_club' club.id %}">{{ club.club_name }}</a></td>
         <td>{{ club.club_location }}</td>
         <td>{{ club.club_description }}</td>
+        <td>
         <form action="{% url 'join_club' club.id %}" method="get">
-          {% if user.is_applicant %}
+          {% if user in club.applicants.all %}
             <button class="btn card_btn"> Cancel </button>
+          {% elif user in club.members.all %}
+            <button class="btn card_btn"> Leave </button>
           {% else %}
             <button class="btn card_btn"> Join </button>
           {% endif %}
         </form>
+      </td>
       </tr>
       {% endfor %}
         </tbody>

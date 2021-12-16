@@ -231,5 +231,11 @@ def show_club(request, club_id):
 def join_club(request,club_id):
     user = request.user
     club = Club.objects.get(id=club_id)
-    club.addApplicants(user)
+    if user in club.applicants.all():
+        club.removeApplicants(user)
+    elif user in club.members.all():
+        club.removeMember(user)
+    else:
+        club.addApplicants(user)
+
     return redirect('clubs_list')
