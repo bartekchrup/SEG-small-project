@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
-
+import django_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-2@dv!r%*_^tovdo*cf0=9hxgl=xq=eer%8am&f)5ah8sz(q&^9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clubs',
     'widget_tweaks',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'system.urls'
@@ -83,6 +85,11 @@ DATABASES = {
     }
 }
 
+# Lines for heroku deployment
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+# WHITENOISE_USE_FINDERS = True
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -124,6 +131,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AUTH_USER_MODEL = 'clubs.User'
 
@@ -134,3 +142,6 @@ REDIRECT_URL_WHEN_LOGGED_IN = 'clubs_list'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Activate django_heroku
+django_heroku.settings(locals())
