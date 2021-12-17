@@ -36,4 +36,6 @@ urlpatterns = [
     path('club/<int:club_id>/', views.show_club, name = 'show_club'),
     path('create_club/', views.create_club, name = 'create_club'),
     path('join_club/<int:club_id>/', views.join_club, name = 'join_club'),
+    path('accept-application/<int:club_id>/<int:user_id>', views.accept_application, name = 'accept_application'),
+    path('reject-application/<int:club_id>/<int:user_id>', views.reject_application, name = 'reject_application')
 ]
