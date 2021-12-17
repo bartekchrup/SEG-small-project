@@ -256,3 +256,18 @@ def join_club(request,club_id):
         club.addApplicants(user)
 
     return redirect('clubs_list')
+
+@login_required
+def change_club(request, club_id):
+    current_user = request.user
+    club = Club.objects.get(id=club_id)
+    if club.is_owner(current_user):
+        if request.method == 'POST':
+            form = ClubForm(instance=club, data=request.POST)
+            if form.is_valid():
+                messages.add_message(request, messages.SUCCESS, "Profile updated!")
+                form.save()
+                return reverse('clubs_list')
+            else:
+                form = ClubForm(instance=club)
+    return render(request, 'change_club.html', {'form': form})
