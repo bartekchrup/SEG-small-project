@@ -29,7 +29,6 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'personalStatement', 'experienceLevel']
         widgets = { 'bio': forms.Textarea() }
-    # experienceLevel = ChoiceField()
 
     new_password = forms.CharField(
         label='Password',
@@ -78,7 +77,7 @@ class PasswordForm(forms.Form):
         validators=[RegexValidator(
             regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
             message='Password must contain an uppercase character, a lowercase '
-                    'character and a number'
+                    'character and a number.'
             )]
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())

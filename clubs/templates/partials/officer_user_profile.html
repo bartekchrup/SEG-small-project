@@ -2,19 +2,13 @@
     <div class="col-12">
       <img src="{{ user.gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle profile-image" >
       <div class="profile-text">
-        <h3 class="profile-title">{{ user.full_name }}</h3>
-        <p class="profile-username">{{ user.email }}</p>
+        <h3>NAME:</h3>
+        <p class="profile-title">{{ user.full_name }}</p>
+        <h4>My bio:</h4>
+        <p class="profile-bio">{{ user.bio }}</p>
       </div>
       <div class="row content">
         <div class="col-12">
-          <h1>Bio:</h1>
-          <p class="profile-bio">{{ user.bio }}</p>
-          <h1>Personal Statement:</h1>
-          <p class="profile-bio">{{ user.personal_statement }}</p>
-          <h1>Chess Level:</h1>
-          <p class="profile-bio">{{ user.experience }}</p>
-          <h1>Rank:</h1>
-          <p class="profile-bio">{{ user.get_user_level_display }}</p>
         </div>
         <div class="col-3" align="center">
           {% if user.is_applicant %}

@@ -8,7 +8,6 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.conf import settings
-# from .forms import LogInForm, PasswordForm, PostForm, UserForm, SignUpForm
 from .forms import LogInForm, SignUpForm, ClubForm
 from .models import User, Club
 from .helpers import login_prohibited
@@ -27,7 +26,7 @@ def log_in(request):
                 redirect_url = next or settings.REDIRECT_URL_WHEN_LOGGED_IN
                 return redirect(redirect_url)
             else:
-                messages.add_message(request, messages.ERROR, "You have entered the wrong username or password")
+                messages.add_message(request, messages.ERROR, "WRONG USERNAME or PASSWORD ENTERED! Please Try Again!")
         else:
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     else:
@@ -53,10 +52,12 @@ def log_out(request):
     return redirect('home')
 
 @login_prohibited
+#Redirects to the home page if the login credentials are wrong or the user isn't registered
 def home(request):
     return render(request, 'home.html')
 
 @login_required
+#Returns all users that are part of the club
 def user_list(request):
     try:
         selected_club = request.user.preferredClub
@@ -78,9 +79,9 @@ def show_user(request, user_id):
         current_user = request.user
         current_club = current_user.preferredClub
         if (current_club.is_owner(current_user)):
-            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})
+            return render(request, 'owner_show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})#Owner is also given the Member role
         elif (current_club.is_officer(current_user)):
-            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})
+            return render(request, 'officer_show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})#Officer is also given the Member role
         elif (current_club.is_member(current_user)):
             return render(request, 'show_user.html', {'current_user': current_user, 'user': user_to_show, 'user_clubs': user_clubs})
 
@@ -177,6 +178,7 @@ def password(request):
 
 
 @login_required
+#Redirects to a form to update all the user credentials apart from the password
 def changeprofile(request):
     current_user = request.user
     if request.method == 'POST':
@@ -191,12 +193,14 @@ def changeprofile(request):
     return render(request, 'changeprofile.html', {'form': form, 'user_clubs': user_clubs})
 
 @login_required
+#Returns all the clubs that have been created in the system
 def clubs_list(request):
     clubs = Club.objects.all()
     user_clubs = request.user.member_at.all()
     return render(request, 'clubs_list.html', {'clubs': clubs, 'user_clubs': user_clubs})
 
 @login_required
+#Creates a club with the specified parameters and assigns the maker to be the club owner
 def create_club(request):
     if request.method=='POST':
         form = ClubForm(request.POST)
@@ -206,7 +210,7 @@ def create_club(request):
             club_location = form.cleaned_data.get('club_location')
             club_description = form.cleaned_data.get('club_description')
             club = Club.objects.create(owner = user, club_name = club_name, club_location = club_location, club_description = club_description)
-            club.addOfficer(user)
+            club.addOfficer(user) #The owner of the club is also given the Officer role
             messages.add_message(request, messages.SUCCESS, "New Club has been successfully created!")
             return redirect('show_club', club.id)
     else:

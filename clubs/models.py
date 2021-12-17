@@ -6,6 +6,7 @@ from libgravatar import Gravatar
 class User(AbstractUser):
     """User model used for authentication and club authoring."""
 
+    #Username implementation only allows usernames that begin with an "@" following a minimum of 3 alphanumericals
     username = models.CharField(
         max_length=30,
         unique=True,
@@ -24,9 +25,9 @@ class User(AbstractUser):
         ADVANCED = 'Advanced'
         INTERMEDIATE = 'Intermediate'
         BEGINNER = 'Beginner'
+
     experienceLevel = models.CharField(max_length=20, choices=Experience.choices, default = "BEGINNER")
     personalStatement = models.CharField(max_length=200, blank=True)
-
     preferredClub = models.ForeignKey('Club', on_delete = models.SET_NULL, null=True)
 
     def full_name(self):
@@ -56,14 +57,14 @@ class Club(models.Model):
     def removeOfficer(self, user):
         self.officers.remove(user)
 
-    def officer_count(self):
-        return self.officers.count()
-
     def addMember(self, user):
         self.members.add(user)
 
     def removeMember(self, user):
         self.members.remove(user)
+
+    def officer_count(self):
+        return self.officers.count()
 
     def member_count(self):
         return self.members.count()
@@ -76,6 +77,3 @@ class Club(models.Model):
 
     def is_owner(self, user):
         return user == self.owner
-
-    # def getClubMemberships(self, user):
-    #     return None
