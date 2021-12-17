@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
-from clubs.models import User, Club
+from .models import User, Club
 import random
 #from clubs.models import Club
 
