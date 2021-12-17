@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
-from ...models import User
+from clubs.models import User, Club
 import random
-from clubs.models import User,Club,Membership
+#from clubs.models import Club
 
 class Command(BaseCommand):
     def __init__(self):
@@ -24,7 +24,7 @@ class Command(BaseCommand):
         user.save()
         return user
 
-    def create_membership(self, user, club, level):
+    def createMembership(self, user, club, level):
         membership = Membership(
            user = user,
            club = club,
@@ -32,7 +32,7 @@ class Command(BaseCommand):
         )
         membership.save()
 
-    def create_club(self, owner):
+    def createClub(self, owner):
         club = Club(
             owner=owner,
             name=self.faker.user_name() + " Chess club",
@@ -56,11 +56,11 @@ class Command(BaseCommand):
         kerbal_club.save()
 
 
-        self.create_membership(jebediah_user, kerbal_club, '2')
+        self.createMembership(jebediah_user, kerbal_club, '2')
         kerbal_club.members.add(jebediah_user)
-        self.create_membership(valentina_user, kerbal_club, '2')
+        self.createMembership(valentina_user, kerbal_club, '2')
         kerbal_club.members.add(valentina_user)
-        self.create_membership(billie_user, kerbal_club, '2')
+        self.createMembership(billie_user, kerbal_club, '2')
         kerbal_club.members.add(billie_user)
 
 
@@ -74,13 +74,13 @@ class Command(BaseCommand):
             else:
                 owner=valentina_user
 
-            club = self.create_club(owner)
+            club = self.createClub(owner)
 
             if(i == 0):
-                self.create_membership(jebediah_user, club, '3')
+                self.createMembership(jebediah_user, club, '3')
                 club.members.add(jebediah_user)
             if(i == 2):
-                self.create_membership(billie_user,club,'2')
+                self.createMembership(billie_user,club,'2')
                 club.members.add(billie_user)
 
             for i in range(8):
@@ -88,7 +88,7 @@ class Command(BaseCommand):
                 last_name = self.faker.last_name()
                 username = first_name.lower() + last_name.lower() + "@applicants.org"
                 applicant = self.create_user(first_name, last_name, username)
-                self.create_membership(applicant, club, "1")
+                self.createMembership(applicant, club, "1")
                 club.members.add(applicant)
 
             for i in range(10):
@@ -96,7 +96,7 @@ class Command(BaseCommand):
                 last_name = self.faker.last_name()
                 username = first_name.lower() + last_name.lower() + "@members.org"
                 member = self.create_user(first_name, last_name, username)
-                self.create_membership(member, club, "2")
+                self.createMembership(member, club, "2")
                 club.members.add(member)
 
             for i in range(5):
@@ -104,7 +104,6 @@ class Command(BaseCommand):
                 last_name = self.faker.last_name()
                 username = first_name.lower() + last_name.lower() + "@officers.org"
                 officer = self.create_user(first_name, last_name, username)
-                self.create_membership(officer, club, "3")
+                self.createMembership(officer, club, "3")
                 club.members.add(officer)
-
-        print("Users and Clubs Seeded")
+    print("Users and Clubs Seeded")
