@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
-from ...models import User
+from clubs.models import User, Club
 
 class Command(BaseCommand):
     def __init__(self):
@@ -14,6 +14,5 @@ class Command(BaseCommand):
                 user.delete()
 
     def handle(self, *args, **options):
-        print('Deleting all users ')
-        for club in Clubs.objects.all():
-                club.delete()
+        print('Deleting all Clubs')
+        Club.objects.all.delete()
