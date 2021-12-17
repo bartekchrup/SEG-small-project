@@ -12,7 +12,5 @@ class Command(BaseCommand):
         for user in User.objects.all():
             if not user.is_superuser:
                 user.delete()
-
-    def handle(self, *args, **options):
         print('Deleting all Clubs')
         Club.objects.all().delete()
