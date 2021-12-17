@@ -15,4 +15,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('Deleting all Clubs')
-        Club.objects.all.delete()
+        Club.objects.all().delete()
