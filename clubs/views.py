@@ -267,7 +267,7 @@ def change_club(request, club_id):
             if form.is_valid():
                 messages.add_message(request, messages.SUCCESS, "Profile updated!")
                 form.save()
-                return reverse('clubs_list')
+                return redirect('clubs_list')
             else:
                 form = ClubForm(instance=club)
     return render(request, 'change_club.html', {'form': form})
