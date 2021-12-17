@@ -88,15 +88,37 @@ ul.errorlist {
 /*
  * Profile
  */
+.container{
+  background: url('images/chess-cover.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size:cover;
+  background-clip: padding-box;
+  -o-background-size: cover;
+}
+
+.card{
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+ max-width: 700px;
+ max-height: 500px;
+ margin: auto;
+ text-align: center;
+ background-color:white;
+}
+
 .profile-image {
   width: 120px;
-  clear:both;
-  float:left;
+  margin: 0;
+  /*float: left;*/
+  
 }
 
 .profile-text {
   overflow:hidden;
-  padding-left:20px
+  /*padding-top: 3px;
+  padding-right: 200px ;
+  padding-left:200px;*/
+  margin: 0 auto;
 }
 
 h3.profile-title {
@@ -104,13 +126,20 @@ h3.profile-title {
 }
 
 .profile-username {
-  color: #777777;
+  color: #000000;
   font-weight: 300;
-  font-style: italic;
 }
 
 .profile-bio {
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+
+.profile-personalStatement {
+  font-size: 1.5rem;
+}
+
+.profile-experienceLevel {
+  font-size: 1.5rem;
 }
 
 .profile-statistics {
