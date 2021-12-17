@@ -64,20 +64,46 @@ def _findSelectedClub(user):
             user.save()
     return user.preferredClub
 
-
-
 @login_required
 def user_list(request):
     try:
         selected_club = _findSelectedClub(request.user)
         selected_club = request.user.preferredClub
-        users_in_club = selected_club.members.all()
-        club_name = selected_club.club_name
+        # users_in_club = selected_club.members.all()
+        # club_name = selected_club.club_name
     except ObjectDoesNotExist:
         return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
     else:
         user_clubs = request.user.member_at.all()
-        return render(request, 'user_list.html', {'users': users_in_club, 'user_clubs': user_clubs, 'club_name': club_name})
+        return render(request, 'user_list.html', {'selected_club': selected_club, 'user_clubs': user_clubs})
+
+@login_required
+def accept_application(request, user_id, club_id):
+    try:
+        club = Club.objects.get(id = club_id)
+        userToAccept = User.objects.get(id = user_id)
+    except ObjectDoesNotExist:
+        return redirect('home')
+    else:
+        current_user = request.user
+        if (current_user in club.officers.all()) or (current_user == club.owner):
+            club.applicants.remove(userToAccept)
+            club.addMember(userToAccept)
+    return redirect('user_list')
+
+@login_required
+def reject_application(request, user_id, club_id):
+    try:
+        club = Club.objects.get(id = club_id)
+        userToAccept = User.objects.get(id = user_id)
+    except ObjectDoesNotExist:
+        return redirect('user_list')
+    else:
+        current_user = request.user
+        if (current_user in club.officers.all()) or (current_user == club.owner):
+            club.applicants.remove(userToAccept)
+            club.removeMember(userToAccept)
+    return redirect('user_list')
 
 @login_required
 def show_user(request, user_id):
