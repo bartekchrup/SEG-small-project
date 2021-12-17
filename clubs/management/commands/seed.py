@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
-from .models import User, Club
+from clubs.models import User, Club
 import random
 #from clubs.models import Club
 
@@ -11,14 +11,15 @@ class Command(BaseCommand):
 
     def _create_user(self):
         user = User.objects.create_user(
-            "@"+self.faker.user_name(),
+            username= "@"+self.faker.user_name(),
+
             first_name= self.faker.first_name(),
             last_name= self.faker.last_name(),
             experienceLevel = random.randint(1,5),
             personalStatement = self.faker.sentence(),
             bio=self.faker.text(),
             email=self.faker.unique.free_email(),
-            password= self.faker.password(),
+            password="Password123",
 
         )
         user.save()
@@ -43,13 +44,13 @@ class Command(BaseCommand):
         return club
 
     def handle(self, *args, **options):
-        jebediah_user=self.create_user("Jebediah","Kerman","jeb@example.org")
-        valentina_user=self.create_user("Valentina","Kerman","val@example.org")
-        billie_user=self.create_user("Billie","Kerman","billie@example.org")
-        kerbal_owner=self.create_user('Gemsbok', 'SEG_Owner', 'gemsbok@owners.org')
+        jebadiah_user= User.objects.create_user(username = "@Jeb", first_name = "Jebadiah" , last_name = "", bio = "a", email = "jeb@example.org", experienceLevel = random.randint(1,5))
+        valentina_user = User.objects.create_user(username = "@Val", first_name = "Valentina" , last_name = "Kerman", bio = "b", email = "val@example.org", experienceLevel = random.randint(1,5))
+        billie_user= User.objects.create_user(username = "@Bil", first_name = "Billie" , last_name = "Kerman", bio = "c", email = "billie@example.org", experienceLevel = random.randint(1,5))
+        kerbal_owner= User.objects.create_user(username = "@Kerba", first_name = "llama" , last_name = "SEG_Owner", bio = "d", email = "llama@example.org", experienceLevel = random.randint(1,5))
         kerbal_club=Club(
             owner=kerbal_owner,
-            name="Kerbal Chess Club",
+            club_name="Kerbal Chess Club",
             location=self.faker.address(),
             description="This is Kerbal club."
         )
@@ -70,7 +71,7 @@ class Command(BaseCommand):
             username = first_name.lower() + last_name.lower() + "@owners.org"
             owner = None
             if(i != 1):
-                owner = self.create_user(first_name, last_name, username)
+                owner = self._create_user()
             else:
                 owner=valentina_user
 
@@ -87,7 +88,7 @@ class Command(BaseCommand):
                 first_name = self.faker.first_name()
                 last_name = self.faker.last_name()
                 username = first_name.lower() + last_name.lower() + "@applicants.org"
-                applicant = self.create_user(first_name, last_name, username)
+                applicant = self._create_user()
                 self.createMembership(applicant, club, "1")
                 club.members.add(applicant)
 
@@ -95,7 +96,7 @@ class Command(BaseCommand):
                 first_name = self.faker.first_name()
                 last_name = self.faker.last_name()
                 username = first_name.lower() + last_name.lower() + "@members.org"
-                member = self.create_user(first_name, last_name, username)
+                member = self._create_user()
                 self.createMembership(member, club, "2")
                 club.members.add(member)
 
@@ -103,7 +104,7 @@ class Command(BaseCommand):
                 first_name = self.faker.first_name()
                 last_name = self.faker.last_name()
                 username = first_name.lower() + last_name.lower() + "@officers.org"
-                officer = self.create_user(first_name, last_name, username)
+                officer = self._create_user()
                 self.createMembership(officer, club, "3")
                 club.members.add(officer)
     print("Users and Clubs Seeded")
